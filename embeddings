@@ -1,0 +1,22 @@
+# -------------------- Embeddings + Vector Store --------------------
+from langchain_ollama import OllamaEmbeddings
+from langchain_community.vectorstores import FAISS
+
+class VectorStoreManager:
+    def __init__(self, index_name="faiss_index_", embed_model="nomic-embed-text"):
+        self.index_name = index_name
+        self.embeddings = OllamaEmbeddings(model=embed_model)
+        self.vectorstore = None
+
+    def build(self, splits):
+        self.vectorstore = FAISS.from_documents(splits, self.embeddings)
+        self.vectorstore.save_local(self.index_name)
+        return self.vectorstore
+
+    def load(self):
+        self.vectorstore = FAISS.load_local(
+            self.index_name,
+            self.embeddings,
+            allow_dangerous_deserialization=True
+        )
+        return self.vectorstore
