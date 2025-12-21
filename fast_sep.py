@@ -15,6 +15,7 @@ app = FastAPI(title="RAG FastAPI Service")
 # -------------------- BUILD FULL RAG PIPELINE --------------------
 
 # 1. Load PDF
+print("Initializing RAG pipeline...")
 loader = DocumentLoader("sa.pdf")
 docs = loader.load()
 
